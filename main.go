@@ -1,6 +1,13 @@
 package main
 
-import "regexp"
+import (
+	"context"
+	"regexp"
+	"sync"
+
+	"github.com/dghubble/go-twitter/twitter"
+	"github.com/ipfs/ipfs-cluster/api/rest/client"
+)
 
 // Action that serves as a command for ipfs cluster
 type Action string
@@ -13,3 +20,19 @@ var (
 	AddAction    Action = "!add"
 	HelpAction   Action = "!help"
 )
+
+// Bot is the twitter bot
+type Bot struct {
+	ctx           context.Context
+	cancel        context.CancelFunc
+	name          string
+	id            string
+	twClient      *twitter.Client
+	clusterClient client.Client
+	followedBy    sync.Map
+	die           chan struct{}
+}
+
+func main() {
+
+}
