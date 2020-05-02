@@ -33,6 +33,11 @@ type Bot struct {
 	die           chan struct{}
 }
 
+// New creates Titanium Giant
+func New() (*Bot, error) {
+	return nil, nil
+}
+
 func main() {
 
 }
