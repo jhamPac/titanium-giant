@@ -1,2 +1,3 @@
-# titanium-giant
+# Titanium Giant 🤖
+
 A nice twitter Bot
