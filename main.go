@@ -10,7 +10,6 @@ import (
 
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
-	ipfsCluster "github.com/ipfs/ipfs-cluster/api/rest/client"
 	"github.com/joho/godotenv"
 )
 
@@ -28,28 +27,27 @@ var (
 
 // Bot is the twitter bot
 type Bot struct {
-	ctx           context.Context
-	cancel        context.CancelFunc
-	name          string
-	id            string
-	twClient      *twitter.Client
-	clusterClient ipfsCluster.Client
-	followedBy    sync.Map
-	die           chan struct{}
+	ctx        context.Context
+	cancel     context.CancelFunc
+	name       string
+	id         string
+	twClient   *twitter.Client
+	followedBy sync.Map
+	die        chan struct{}
 }
 
 // Kill destroys the bot and cancels the context
-func (b Bot) Kill() {
+func (b *Bot) Kill() {
 	b.cancel()
 }
 
 // Name returns the bot's handle
-func (b Bot) Name() string {
+func (b *Bot) Name() string {
 	return b.name
 }
 
 // ID returns the twitter user ID used by the bot
-func (b Bot) ID() string {
+func (b *Bot) ID() string {
 	return b.id
 }
 
