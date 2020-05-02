@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -52,6 +53,29 @@ func (b Bot) ID() string {
 	return b.id
 }
 
+func (b *Bot) fetchFollowers() {
+	var nextCursor int64 = -1
+	includeEntities := false
+
+	for nextCursor != 0 {
+		followers, _, err := b.twClient.Followers.List(
+			&twitter.FollowerListParams{
+				Count:               200,
+				IncludeUserEntities: &includeEntities,
+			},
+		)
+
+		if err != nil {
+			log.Println(err)
+		}
+
+		fmt.Println(followers)
+
+		nextCursor++
+	}
+
+}
+
 // New creates Titanium Giant
 func New() (*Bot, error) {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -69,8 +93,8 @@ func New() (*Bot, error) {
 	}
 
 	bot.fetchFollowers()
-	go bot.watchFollowers()
-	go bot.watchTweets()
+	// go bot.watchFollowers()
+	// go bot.watchTweets()
 
 	return bot, nil
 }
