@@ -37,6 +37,21 @@ type Bot struct {
 	die           chan struct{}
 }
 
+// Kill destroys the bot and cancels the context
+func (b Bot) Kill() {
+	b.cancel()
+}
+
+// Name returns the bot's handle
+func (b Bot) Name() string {
+	return b.name
+}
+
+// ID returns the twitter user ID used by the bot
+func (b Bot) ID() string {
+	return b.id
+}
+
 // New creates Titanium Giant
 func New() (*Bot, error) {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -52,6 +67,10 @@ func New() (*Bot, error) {
 		twClient: twClient,
 		die:      make(chan struct{}, 1),
 	}
+
+	bot.fetchFollowers()
+	go bot.watchFollowers()
+	go bot.watchTweets()
 
 	return bot, nil
 }
