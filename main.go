@@ -92,7 +92,7 @@ func New() (*Bot, error) {
 		die:      make(chan struct{}, 1),
 	}
 
-	bot.fetchFollowers()
+	// bot.fetchFollowers()
 	// go bot.watchFollowers()
 	// go bot.watchTweets()
 
@@ -105,4 +105,6 @@ func main() {
 		log.Fatal("Could not load the environment variables")
 	}
 
+	bot, _ := New()
+	bot.fetchFollowers()
 }
