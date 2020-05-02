@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
 	"sync"
+	"time"
 
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
@@ -67,9 +67,14 @@ func (b *Bot) fetchFollowers() {
 			log.Println(err)
 		}
 
-		fmt.Println(followers)
-
-		nextCursor++
+		for _, u := range followers.Users {
+			_, old := b.followedBy.LoadOrStore(u.ID, struct{}{})
+			if !old {
+				log.Println("Friend: ", u.ScreenName)
+			}
+		}
+		nextCursor = followers.NextCursor
+		time.Sleep(2 * time.Second)
 	}
 
 }
